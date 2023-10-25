@@ -1,0 +1,24 @@
+version: "3.9"
+services:
+  nginx:
+    ports:
+      - "3000:80"
+  bun:
+    build:
+      context: .
+    volumes:
+      - ./:/app
+      - /app/node_modules
+    environment:
+      - MONGO_USER=Bader
+      - MONGO_PASSWORD=myPassword
+      - SESSION_SECRET=someSecret
+      - REDIS_USER=Bader
+      - REDIS_PASSWORD=myPassword
+      - POSTGRES_PASSWORD=example
+      - POSTGRES_DB=articles
+    command: sh -c 'bun --force pm migrate && bun --watch run start'
+  mongo:
+    environment:
+      - MONGO_INITDB_ROOT_USERNAME=Bader
+      - MONGO_INITDB_ROOT_PASSWORD=myPassword
