@@ -28,18 +28,14 @@ services:
     command: mongod --config /etc/mongod.conf  # Specify the custom configuration file path
   redis:
     image: redis
-    # volumes:
-    #   - ./redis/redis.conf:/usr/local/etc/redis/redis.conf:ro
-      # - ./server/redis/.overcommit_memory:/proc/sys/vm/overcommit_memory
+    volumes:
+      - ./config/redis/redis.conf:/usr/local/etc/redis/redis.conf:ro
+      # - ./config/redis/.overcommit_memory:/proc/sys/vm/overcommit_memory
     # command:
       # - sh -c "echo 1 > /proc/sys/vm/overcommit_memory"
       # - ./redis-server /usr/local/etc/redis/redis.conf
       # - redis-server AUTH default myPassword
       # - AUTH default myPassword
-  # node:
-    # image: node:lts
-    # command:
-      # - npm install
   postgres:
     image: postgres:alpine
     restart: always
@@ -48,10 +44,10 @@ services:
       POSTGRES_DB: articles
     volumes:
       - ./config/psql/postgresql.conf:/etc/postgresql/postgresql.conf
-  adminer:  # i think it's not important to have
-    image: adminer
-    restart: always
-    ports:
-      - 8080:8080
+  # adminer:  # i think it's not important to have
+  #   image: adminer
+  #   restart: always
+  #   ports:
+  #     - 8080:8080
 volumes:
   mongo-db:

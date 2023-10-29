@@ -5,13 +5,7 @@ try {
   console.log(e);
 }
 const connectDB = (url) => {
-  return mongoose.connect(url//, {
-  //   useNewUrlParser: true,
-  //   useUnifiedTopology: true,
-  //   // useFindAndModify: false,
-  //   // useCreateIndex: true,
-  // }
-  );
+  return mongoose.connect(url);
 };
 
 export { connectDB };

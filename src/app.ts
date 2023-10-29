@@ -1,21 +1,27 @@
-// import figlet from "figlet";
 //  we need to transpile files served to front-end tsc => js
 
-// this command converts libraries from package-lock.json into bun.lockb
-// bun pm migrate
-
-import express from "express";
 import path from "path";
-import signUpRoute from "../routes/signUp";
+import "express-async-errors";
 import cors from "cors";
-import { connectDB } from "../db/connect";
 import helmet from "helmet";
 import xss from "xss-clean";
 import { Pool } from "pg";
-
-// import { google } from 'googleapis';//, youtube_v3 2nd param
+// import figlet from "figlet";// for ascii art
+import express from "express";
 const app = express();
-const port = process.env.PORT || 3000;
+// import { google } from 'googleapis';//, youtube_v3 2nd param
+import { connectDB } from "../db/connect";
+// import authenticateUser from "../middleware/authentication";
+
+
+// const authRouter = require("./routes/auth");
+// const jobsRouter = require("./routes/jobs");
+import signUpRoute from "../routes/signUp";
+import frontAPIs from "../routes/front-routers";
+// error handler
+import  notFoundMiddleware from '../middleware/not-found';
+import  errorHandlerMiddleware from '../middleware/error-handler';
+
 
 const {
   MONGO_USER,
@@ -39,7 +45,7 @@ app.use(
     contentSecurityPolicy: {
       directives: {
         defaultSrc: ["'self'"],
-        scriptSrc: ["'self'", "'unsafe-inline'"],
+        scriptSrc: ["'self'", "http://bun:3000"],
         // Add other CSP directives as needed
         frameSrc: ["'self'", "https://www.youtube.com"],
       },
@@ -52,6 +58,7 @@ app.disable("x-powered-by");
 app.use(xss());
 
 app.use(express.json());
+app.use(express.urlencoded({ extended: true }));
 app.use(express.static(path.join(__dirname, '../public')));
 
 // const YOUTUBE_API_V3 = 'AIzaSyDPDrhysLWuG3DL-509OfgSr_6yDLeOOPY';
@@ -59,11 +66,20 @@ app.use(express.static(path.join(__dirname, '../public')));
 //   version: "v3",
 //   auth: YOUTUBE_API_V3,
 // });
-app.get('/', (req, res) => {
-  res.sendFile(path.join(__dirname, '../views/index.html'));
-});
 
+app.use("/", frontAPIs);
 app.use("/api/", signUpRoute);
+
+// from 6.5 John
+// app.use('/api/v1/auth', authRouter);
+// app.use('/api/v1/jobs', authenticateUser, jobsRouter);
+
+// app.get('*', (req, res) => {
+//   res.sendFile(path.resolve(__dirname, './client/build', 'index.html'));
+// });
+
+app.use(notFoundMiddleware);
+app.use(errorHandlerMiddleware);
 
 // const videoRoute = async (req, res) => {
 //   const { youtube } = google;
@@ -96,9 +112,7 @@ app.use("/api/", signUpRoute);
 //   }
 // };
 // app.use('/api/video', videoRoute);
-app.get('/video', (req, res) => {
-  res.sendFile(path.join(__dirname, '../views/video.html'));
-});
+// app.get('/video', );
 
 
 const mongoURL = `mongodb://${MONGO_USER}:${MONGO_PASSWORD}@${MONGO_IP}:${MONGO_PORT}/?
@@ -126,6 +140,7 @@ app.get('/query', (req, res) => {
   });
 });
 
+const port = process.env.PORT || 3000;
 app.listen(port, () => 
   console.log( `Listening on port ${port}...` )
 );
