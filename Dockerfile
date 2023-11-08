@@ -4,8 +4,13 @@ WORKDIR /app
 
 COPY package.json .
 COPY ./bun.lockb ./
+ARG BUN_ENV
+RUN if [ "$BUN_ENV" = "development" ]; \
+  then bun install; \
+  else bun install --only=production; \
+  fi
 
-RUN bun install
+# RUN bun install
 
 COPY . .
 

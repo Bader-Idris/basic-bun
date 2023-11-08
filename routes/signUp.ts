@@ -2,6 +2,7 @@ import express from "express";
 const router = express.Router();
 import {
   signUpController,
+  logInController,
 } from "../controllers/signUp";
 
 // import authenticateUser from "../middleware/authentication";
@@ -19,7 +20,8 @@ import {
 
 
 // router.route("/signup").get(loginPage);//.post(signUpController);
-router.route("/login").post(signUpController);
+router.route("/signup").post(signUpController);
+router.route("/login").post(logInController);
 
 // router.post('/register', apiLimiter, register);
 // router.post('/login', apiLimiter, login);

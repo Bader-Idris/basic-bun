@@ -27,17 +27,35 @@ const signUpController = async (req: Request, res: Response) => {
   //   res.status(500).json({ error: 'Internal server error' });
   // }
 
-  const { email, passwd, remember_me } = req.body;
-  if (!email || !passwd || !remember_me) return res.send(Error ('dang, fix me yo'))
+  const { email, password, remember_me } = req.body;
+  if (!email || !password || !remember_me) return res.status(400).send('Please provide all the required fields');
   res.json({
     email: email,
-    password: passwd,
+    password: password,
     KeepLogged: remember_me,
   });
 };
 
+
+const logInController = async (req: Request, res: Response) => {
+  const { email, password, remember_me } = req.body;
+
+  if (!email || !password || !remember_me) return res
+      .status(400)
+      .send(
+        "Please provide all the required fields"
+      );
+  res.json({
+    email: email,
+    password: password,
+    KeepLogged: remember_me,
+  });
+};
+
+
 export {
-  signUpController
+  signUpController,
+  logInController,
 };
 
 

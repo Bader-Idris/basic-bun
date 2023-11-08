@@ -4,30 +4,36 @@ services:
   bun:
     build: .
     image: baderidris/littlebun
+    # container_name: bun-container
     environment:
       - PORT=3000
     depends_on:
       - mongo
   nginx:
     image: nginx:stable-alpine
+    container_name: bun-nginx
+    restart: always
     ports:
-      - "5000:80"
+      - "3000:80"
     volumes:
-      - ./config/nginx/default.conf:/etc/nginx/conf.d/default.conf:ro
-      - ./views:/usr/share/nginx/html/views
-      - ./public:/usr/share/nginx/html/public
+      - ./views:/usr/share/nginx/html/views:ro
+      - ./public:/usr/share/nginx/html/public:ro
   mongo:
     image: mongo:4.4
+    container_name: bun-mongo
+    restart: always
     # try installing new versions, on prod servers! needs newer CPUs than mine
     environment:
       - MONGO_INITDB_ROOT_USERNAME=Bader
       - MONGO_INITDB_ROOT_PASSWORD=myPassword
     volumes:
-      - mongo-db:/data/db
-      - ./config/mongo/mongod.conf:/etc/mongod.conf  # Mount the custom configuration file
+      - mongo-db:/data/db:rw  # 🔴chmod +x if (node.length > 1)🔴
+      - ./config/mongo/mongod.conf:/etc/mongod.conf:ro
     command: mongod --config /etc/mongod.conf  # Specify the custom configuration file path
   redis:
     image: redis
+    container_name: bun-redis
+    restart: always
     volumes:
       - ./config/redis/redis.conf:/usr/local/etc/redis/redis.conf:ro
       # - ./config/redis/.overcommit_memory:/proc/sys/vm/overcommit_memory
@@ -38,12 +44,14 @@ services:
       # - AUTH default myPassword
   postgres:
     image: postgres:alpine
+    container_name: bun-psql
     restart: always
     environment:
       POSTGRES_PASSWORD: example
       POSTGRES_DB: articles
     volumes:
-      - ./config/psql/postgresql.conf:/etc/postgresql/postgresql.conf
+      - psql-data:/var/lib/postgresql/data:rw  # 🔴chmod +x if (node.length > 1)🔴
+      - ./config/psql/postgresql.conf:/etc/postgresql/postgresql.conf:ro
   # adminer:  # i think it's not important to have
   #   image: adminer
   #   restart: always
@@ -51,3 +59,4 @@ services:
   #     - 8080:8080
 volumes:
   mongo-db:
+  psql-data:

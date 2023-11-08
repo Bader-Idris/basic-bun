@@ -1,0 +1,198 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>register and login</title>
+  <link href='https://fonts.googleapis.com/css?family=Titillium+Web:400,300,600' rel='stylesheet' type='text/css'>
+  <link rel="stylesheet" href="../public/css/normalize.css">
+  <link rel="stylesheet" href="../public/css/register-and-login.css">
+</head>
+<body>
+  <div class="form">
+    <ul class="tab-group">
+      <li class="tab active"><a href="#signup">Register</a></li>
+      <li class="tab"><a href="#login">Log In</a></li>
+    </ul>
+    <div class="tab-content">
+      <div id="signup">
+        <h1>Register and get a PDF copy for free!</h1>
+        <form action="/api/signup" method="post">
+          <div class="top-row">
+            <div class="field-wrap">
+              <label>
+                First Name<span class="req">*</span>
+              </label>
+              <input type="text" required autocomplete="off" name="fName" />
+            </div>
+            <div class="field-wrap">
+              <label>
+                Last Name<span class="req">*</span>
+              </label>
+              <input type="text" required autocomplete="off" name="lName" />
+            </div>
+          </div>
+          <div class="field-wrap">
+            <label>
+              Email<span class="req">*</span>
+            </label>
+            <input type="email" required autocomplete="off" name="email" />
+          </div>
+          <div class="field-wrap">
+            <label>
+              Password<span class="req">*Minimum 6 characters!</span>
+            </label>
+            <input type="password" required autocomplete="off" name="password" />
+          </div>
+          <button type="submit" class="button button-block" />Register</button>
+        </form>
+      </div>
+      <div id="login">
+        <h1>Welcome back!</h1>
+        <form action="/api/login" method="post">
+          <div class="field-wrap">
+            <label>
+              Email<span class="req"></span>
+            </label>
+            <input type="email" required autocomplete="off" name="email" />
+          </div>
+          <div class="field-wrap">
+            <label>
+              Password<span class="req"></span>
+            </label>
+            <input type="password" required autocomplete="off" name="password" />
+          </div>
+          <div class="field-wrap">
+            <label>
+              Password<span class="req"></span>
+            </label>
+            <input type="checkbox" autocomplete="off" name="remember_me" />
+          </div>
+          <div class="assistence">
+            <p class="forgot"><a href="#">Forgot Password?</a></p>
+            <p class="forgot"><a href="#">Forgot Email?</a></p>
+            <p class="forgot"><a href="#">YEET</a></p>
+          </div>
+          <button class="button button-block" />Log In</button>
+        </form>
+      </div>
+    </div><!-- tab-content -->
+  </div> <!-- /form -->
+  <script src="../public/js/registerAndLogin.js"></script>
+</body>
+</html>
+
+<!--
+  tell me more and in detials abotu these options you provided:
+Security Considerations
+Resource Allocation
+
+Certainly! Here are more details about security considerations and resource allocation when working with Docker containers:
+
+1. Security Considerations:
+   - Secure Passwords: Ensure that you use strong, unique passwords for services inside your Docker containers, including databases like MongoDB and PostgreSQL. Weak passwords can make your containers vulnerable to unauthorized access.
+   - Network Security: Limit access to your containers by configuring network security rules. Utilize firewalls, network policies, or security groups to restrict access to specific ports and IP addresses.
+   - Container Isolation: Isolate your containers from each other to minimize the impact of potential security breaches. Use separate networks or network segments for different services to prevent lateral movement within your infrastructure.
+   - Image Security: Use trusted base images from official sources or reputable repositories. Regularly update your images to ensure you have the latest security patches and bug fixes.
+   - Secrets Management: Avoid hard-coding sensitive information like passwords or API keys in your Docker Compose files. Instead, use secrets management tools like Docker Swarm secrets, HashiCorp Vault, or cloud provider-specific secret management services to securely manage and distribute secrets to your containers.
+
+2. Resource Allocation:
+   - CPU and Memory Limits: Set appropriate CPU and memory limits for your containers based on the resource requirements of your applications. This prevents containers from monopolizing system resources and ensures fair resource allocation across all services.
+   - Monitoring and Scaling: Monitor resource usage of your containers using tools like Docker stats, Prometheus, or cloud provider monitoring services. Scale your containers horizontally by increasing the number of replicas or vertically by allocating more resources to meet the demands of your application.
+   - Container Sizing: Right-size your containers by analyzing the resource utilization patterns of your applications. Avoid over-provisioning or under-provisioning resources, as it can impact performance and efficiency.
+   - Container Placement: Consider the placement of your containers across different hosts or nodes. Distribute containers based on resource availability and workload characteristics to optimize resource utilization and avoid bottlenecks.
+
+Both security considerations and resource allocation are crucial aspects of running Docker containers in production environments. By implementing appropriate security measures and optimizing resource allocation, you can enhance the stability, performance, and security of your containerized applications. It's important to continuously review and update these aspects as your infrastructure and application requirements evolve.
+
+
+and learn more about Healthchecks logging in docker-compose files
+
+To reduce the cost of downloading static resources like styles.css and main.js every time a client moves through your pages, you can leverage browser caching.
+
+Browser caching allows you to specify how long a browser should keep a copy of a resource (such as a CSS file) before requesting it again from the server. This can significantly reduce the number of requests made to your server and improve the performance of your website.
+
+To enable browser caching for your static resources, you can set the `Cache-Control` header in your server's response to requests for these resources. For example, you can set the header to `public, max-age=31536000` to tell the browser to cache the resource for a year.
+
+Here's an example of how you can set the `Cache-Control` header for static resources in an Express route:
+
+```javascript
+app.get('/styles.css', (req, res) => {
+  res.setHeader('Cache-Control', 'public, max-age=31536000');
+  res.sendFile('/path/to/styles.css');
+});
+
+app.get('/main.js', (req, res) => {
+  res.setHeader('Cache-Control', 'public, max-age=31536000');
+  res.sendFile('/path/to/main.js');
+});
+```
+
+You can also configure your Nginx server to set the `Cache-Control` header for static resources. Here's an example of how you can set the header in an Nginx configuration file:
+
+```
+location /static/ {
+  expires 1y;
+  add_header Cache-Control "public, max-age=31536000";
+}
+```
+
+By setting the `expires` directive to `1y`, you're telling the browser to cache the resource for a year. The `add_header` directive is used to add the `Cache-Control` header to the server's response.
+
+With browser caching enabled, your clients' browsers will cache your static resources and only request them from the server when their cache expires. This can significantly reduce the number of requests made to your server and improve the performance of your website.
+
+-->
+
+<!-- 
+  html req.body
+
+  signup http://localhost:3000/api/signup
+  fName lName email password
+
+  login http://localhost:3000/api/login
+  email
+  password
+
+
+  
+
+  POST to http://localhost:3000/api/login
+  req.body:
+  {
+    "email":"www.bader.com9@gmail.com",
+    "fName":"bader",
+    "lName":"idris",
+    "password":"iLoveHanady",
+  }
+
+
+
+  POST to http://localhost:3000/api/login
+  req.body:
+  {
+    "email":"www.bader.com9@gmail.com",
+    "password":"iLoveHanady",
+    "remember_me": true
+  }
+
+
+
+
+
+
+ so, if I send this request body as a post verb via postman:
+
+  POST to http://localhost:3000/api/login
+  req.body:
+  {
+    "email":"www.bader.com9@gmail.com",
+    "fName":"bader",
+    "lName":"idris",
+    "password":"iLoveHanady",
+  }
+
+into this path:
+http://localhost:3000/api/signup
+
+
+will it get sent to my server without any front-end issue??
+-->

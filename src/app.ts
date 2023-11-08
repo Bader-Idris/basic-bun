@@ -42,16 +42,25 @@ const {
 
 app.use(
   helmet({//this helmet stops any new api, keep an eye on it when adding new ones
+    // contentSecurityPolicy: {
+    //   directives: {
+    //     defaultSrc: ["'self'"],
+    //     scriptSrc: ["'self'", "http://bun:3000"],
+    //     frameSrc: ["'self'", "https://www.youtube.com"],
+    //   },
+    // },
     contentSecurityPolicy: {
       directives: {
         defaultSrc: ["'self'"],
+        // Add other CSP directives as needed [Content Security Policy ]
         scriptSrc: ["'self'", "http://bun:3000"],
-        // Add other CSP directives as needed
         frameSrc: ["'self'", "https://www.youtube.com"],
+        styleSrcElem: ["'self'", "https://fonts.googleapis.com"],
       },
     },
   })
 );
+
 app.enable("trust proxy");
 app.use(cors());
 app.disable("x-powered-by");
@@ -139,7 +148,7 @@ app.get('/query', (req, res) => {
     else return res.json(result.rows[0]);
   });
 });
-
+// console.log('hi')
 const port = process.env.PORT || 3000;
 app.listen(port, () => 
   console.log( `Listening on port ${port}...` )
