@@ -1,17 +1,23 @@
 {
-  "name": "bun-testing",
+  "name": "my-blog",
   "version": "1.0.0",
-  "description": "testing bun for prod",
-  "main": "src/app.ts",
+  "description": "Bader's blog website",
+  "main": "app.js",
   "scripts": {
+<<<<<<< HEAD
     "start": "bun src/app.ts",
     "dev": "nodemon src/app.ts",
     "priorDev": "nodemon -L src/app.ts"
+=======
+    "start": "node app.js",
+    "dev": "nodemon -L app.js"
+>>>>>>> 9a7d7ddceb8ab5c9a1c13d410215235846f7c725
   },
   "keywords": [],
   "author": "Bader",
   "license": "ISC",
   "devDependencies": {
+<<<<<<< HEAD
     "@types/express": "^4.17.20",
     "@types/figlet": "^1.5.6",
     "bun-types": "latest",
@@ -19,11 +25,12 @@
   },
   "peerDependencies": {
     "typescript": "^5.0.0"
+=======
+    "nodemon": "^3.0.1"
+>>>>>>> 9a7d7ddceb8ab5c9a1c13d410215235846f7c725
   },
   "dependencies": {
     "@sendgrid/mail": "^7.7.0",
-    "@types/bcrypt": "^5.0.1",
-    "@types/jsonwebtoken": "^9.0.4",
     "bcrypt": "^5.1.1",
     "cloudinary": "^1.41.0",
     "connect-redis": "^6.1.3",

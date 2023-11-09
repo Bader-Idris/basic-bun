@@ -1,3 +1,14 @@
+const registerContainer = document.querySelector('.register');
+registerContainer.addEventListener('click', (e) => {
+  e.preventDefault();
+  e.stopPropagation();
+  const registerLink = e.target.childNodes[1];
+  const registerUrl = registerLink.getAttribute('href');
+  window.location.href = registerUrl;
+});
+
+
+
 const navOptions = document.querySelectorAll('.header .main-nav>li>a');
 const copyrightSpan = document.querySelector('footer .copyright');
 
@@ -29,42 +40,6 @@ const fullYear = curYear.getFullYear();
 
 copyrightSpan.innerHTML = `Copyright  &#169 ${fullYear} All Rights Reserved.`
 
-
-// login page
-const form = document.querySelector('.main-form');
-const submitButton = form.querySelector('.btn');
-submitButton.addEventListener('click', (event) => {
-  event.preventDefault();
-  const email = document.getElementById('email').value;
-  const password = document.getElementById('passwd').value;
-  const rememberMe = document.getElementById('remember').checked;
-  const data = {
-    email: email,
-    password: password,
-    remember_me: rememberMe
-  };
-  fetch('/api/login', {
-    method: 'POST',
-    headers: {
-      'Content-Type': 'application/json'
-    },
-    body: JSON.stringify(data)
-  })
-    .then(response => {
-      // Handle response
-      console.log(response);
-      return response.json(); // Parse the response as JSON
-    })
-    .then(data => {
-      // Handle JSON data
-      console.log(data);
-    })
-    .catch(error => {
-      // Handle error
-      console.log(error);
-    });
-});
-// login page
 
 /*
 - views/
@@ -107,5 +82,4 @@ submitButton.addEventListener('click', (event) => {
 - a.yml
 - README.md
 - redis/
-- bun.lockb*
 */
