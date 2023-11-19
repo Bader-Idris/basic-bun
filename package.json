@@ -1,23 +1,17 @@
 {
-  "name": "my-blog",
-  "version": "1.0.0",
+  "name": "bun-testing",
+  "version": "0.2.0",
   "description": "Bader's blog website",
   "main": "app.js",
   "scripts": {
-<<<<<<< HEAD
-    "start": "bun src/app.ts",
-    "dev": "nodemon src/app.ts",
-    "priorDev": "nodemon -L src/app.ts"
-=======
-    "start": "node app.js",
-    "dev": "nodemon -L app.js"
->>>>>>> 9a7d7ddceb8ab5c9a1c13d410215235846f7c725
+    "start": "bun ./app.js",
+    "dev": "nodemon ./app.js",
+    "priorDev": "nodemon -L app.js"
   },
   "keywords": [],
   "author": "Bader",
   "license": "ISC",
   "devDependencies": {
-<<<<<<< HEAD
     "@types/express": "^4.17.20",
     "@types/figlet": "^1.5.6",
     "bun-types": "latest",
@@ -25,9 +19,6 @@
   },
   "peerDependencies": {
     "typescript": "^5.0.0"
-=======
-    "nodemon": "^3.0.1"
->>>>>>> 9a7d7ddceb8ab5c9a1c13d410215235846f7c725
   },
   "dependencies": {
     "@sendgrid/mail": "^7.7.0",

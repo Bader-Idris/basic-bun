@@ -11,8 +11,8 @@ services:
       args:
         BUN_ENV: development
     volumes:
-      - ./:/app
-      - /app/node_modules
+      # - ./:/app
+      # - /app/bun.lockb
       - ./config/nodemon.json:/app/nodemon.json
     environment:
       - BUN_ENV=development
@@ -23,8 +23,8 @@ services:
       - REDIS_PASSWORD=myPassword
       - POSTGRES_PASSWORD=example
       - POSTGRES_DB=articles
-    command: sh -c 'bun --force pm migrate && bun --watch run start'
-    # command: sh -c 'bun --force pm migrate && bun --watch run dev'
+    command: sh -c 'bun install && bun --watch run start'
+    # command: sh -c 'bun --force pm migrate && bun --watch run start'  🔴 or run dev
   mongo:
     environment:
       - MONGO_INITDB_ROOT_USERNAME=Bader

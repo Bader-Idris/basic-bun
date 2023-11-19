@@ -31,7 +31,7 @@ services:
       - ./config/mongo/mongod.conf:/etc/mongod.conf:ro
     command: mongod --config /etc/mongod.conf  # Specify the custom configuration file path
   redis:
-    image: redis
+    image: redis:alpine3.18
     container_name: bun-redis
     restart: always
     volumes:
@@ -43,7 +43,7 @@ services:
       # - redis-server AUTH default myPassword
       # - AUTH default myPassword
   postgres:
-    image: postgres:alpine
+    image: postgres:16-alpine3.18
     container_name: bun-psql
     restart: always
     environment:
