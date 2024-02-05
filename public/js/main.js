@@ -7,8 +7,6 @@ registerContainer.addEventListener('click', (e) => {
   window.location.href = registerUrl;
 });
 
-
-
 const navOptions = document.querySelectorAll('.header .main-nav>li>a');
 const copyrightSpan = document.querySelector('footer .copyright');
 
@@ -40,46 +38,36 @@ const fullYear = curYear.getFullYear();
 
 copyrightSpan.innerHTML = `Copyright  &#169 ${fullYear} All Rights Reserved.`
 
+// ----------------------------------------------------------------------
 
-/*
-- views/
-- tsconfig.json
-- src/
-  - routes/
-    - mongodb.js
-    - postgresql.js
-    - redis.js
-  - controllers/
-    - mongodbController.js
-    - postgresqlController.js
-    - redisController.js
-  - models/
-    - mongodb/
-      - userModel.js
-      - ...
-    - postgresql/
-      - userModel.js
-      - ...
-    - redis/
-      - cacheModel.js
-      - ...
-  - middleware/
-    - authentication.js
-    - ...
-  - config/
-    - database.js
-    - redis.js
-    - ...
-  - ...
-- public/
-- package-lock.json
-- package.json
-- node_modules/
-- Dockerfile
-- dist/
-- bin/
-- b.yml
-- a.yml
-- README.md
-- redis/
-*/
+function fetchData() {
+  fetch('/api/v1/query', {
+    method: 'GET',
+    headers: {
+      'Content-Type': 'application/json',
+    },
+  })
+    .then((response) => {
+      if (response.ok) {
+        return response.json();
+      } else {
+        throw new Error('Error: ' + response.status);
+      }
+    })
+    .then((data) => {
+      const newDiv = document.createElement('div');
+      newDiv.className = 'query-yo'
+      // Convert the data object to a string
+      const dataString = JSON.stringify(data);
+      newDiv.textContent = JSON.parse(dataString)[0];
+      document.getElementById('queryButton').parentElement.append(newDiv)
+    })
+    .catch((error) => {
+      console.log('Error:', error);
+    });
+}
+
+document.getElementById('queryButton').parentElement.addEventListener('click', function (e) {
+  e.preventDefault();
+  fetchData();
+});

@@ -1,30 +1,11 @@
-// import path from "path";
+const { google } = require('googleapis');//, youtube_v3 2nd param
 
-// import * as bcrypt from "bcrypt";
-// import * as jwt from "jsonwebtoken";
+const path = require("path");
+const bcrypt = require("bcrypt");
+const jwt = require("jsonwebtoken");
 
 const signUpController = async (req, res) => {
-  // const { username, password } = req.body;
 
-  // try {
-  //   // Generate salt and hash the password
-  //   const saltRounds = 12;
-  //   const hashedPassword = await bcrypt.hash(password, saltRounds);
-  //   // Save the hashed password to your database or perform other necessary operations
-
-  //   // Create a JWT token
-  //   const token = jwt.sign({ username }, 'secret-key', { expiresIn: '1h' });
-  //   // Set the token as a cookie
-  //   res.cookie('token', token, { httpOnly: true });
-
-  //   res.json({
-  //     msg: 'Sign up successful',
-  //     token,
-  //   });
-  // } catch (error) {
-  //   console.error(error);
-  //   res.status(500).json({ error: 'Internal server error' });
-  // }
 
   const { fName, lName, email, password } = req.body;
   if (!fName || !lName || !email || !password) return res.status(400).send('Please provide all the required fields');
@@ -34,9 +15,24 @@ const signUpController = async (req, res) => {
     email: email,
     password: password,
   });
+/* mongo's properties
+  name
+  lastName
+  email
+  password
+  location
+ */
+
+  /*
+  {
+    "fName": "bader",
+    "lName": "idris",
+    "email": "www.bader.com9@gmail.com",
+    "password": "ilovehanade"
+  }
+  */
+
 };
-
-
 const logInController = async (req, res) => {
   const { email, password, remember_me = false } = req.body;
   if (!email || !password) return res
@@ -52,35 +48,43 @@ const logInController = async (req, res) => {
 };
 
 
-module.exports = {
-  signUpController,
-  logInController,
+const YOUTUBE_API_V3 = 'AIzaSyDPDrhysLWuG3DL-509OfgSr_6yDLeOOPY';// a random video I chose
+const youtube = google.youtube({
+  version: "v3",
+  auth: YOUTUBE_API_V3,
+});
+
+const getYouTubeVideo = async (req, res) => {
+  const { youtube } = google;
+  const youtubeClient = youtube({
+    version: "v3",
+    auth: YOUTUBE_API_V3,
+  });
+  const videoId = 'Z434ZmDkxzU'; // Extract the video ID from the YouTube URL
+  try {
+    const response = await youtubeClient.videos.list({
+      id: videoId,
+      part: 'snippet',
+    });
+    const video = response.data.items[0];
+    // Construct the video URL
+    const videoUrl = `https://www.youtube.com/embed/${video.id}`;
+    // Create an object with the necessary data
+    const responseData = {
+      videoTitle: video.snippet.title,
+      videoUrl: videoUrl,
+    };
+    // Send the response as JSON
+    res.json(responseData);
+  } catch (error) {
+    console.error('Error retrieving video details:', error);
+    res.status(500).send('Error retrieving video details');
+  }
 };
 
 
-
-/*
-
-const authenticationMiddleware = async (req, res, next) => {
-  const authHeader = req.headers.authorization
-
-  if (!authHeader || !authHeader.startsWith('Bearer ')) {
-    throw new UnauthenticatedError('No token provided')
-  }
-
-  const token = authHeader.split(' ')[1]
-
-  try {
-    const decoded = jwt.verify(token, process.env.JWT_SECRET)
-    const { id, username } = decoded
-    req.user = { id, username }
-    next()
-  } catch (error) {
-    throw new UnauthenticatedError('Not authorized to access this route')
-  }
-}
-
-module.exports = authenticationMiddleware
-
-
-*/
+module.exports = {
+  signUpController,
+  logInController,
+  getYouTubeVideo,
+};
